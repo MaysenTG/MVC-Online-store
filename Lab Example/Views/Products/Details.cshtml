@@ -1,0 +1,48 @@
+﻿@model Lab_Example.Models.Product
+
+@{
+    ViewBag.Title = "Product details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+
+<div id="product-info-div">
+    <div id="image-container">
+        @if (Model.ProductImageMappings != null && Model.ProductImageMappings.Any())
+        {
+            <img src="@(Url.Content(Constants.ProductImagePath) + Model.ProductImageMappings.OrderBy(pim => pim.ImageNumber).ElementAt(0).ProductImage.FileName)" alt="..." id="main_product_image"/>
+        }
+
+        <div id="secondary_images">
+            @foreach (var item in Model.ProductImageMappings.OrderBy(pim => pim.ImageNumber))
+            {
+
+                <div id="secondary_image_container">
+                    <a href="@(Url.Content(Constants.ProductImagePath) + item.ProductImage.FileName)">
+                        <img src="@(Url.Content(Constants.ProductThumbnailPath) + item.ProductImage.FileName)" alt="...">
+                    </a>
+                </div>
+
+            }
+        </div>
+
+    </div>
+    <div id="product-info">
+        @if (User.Identity.IsAuthenticated)
+        {@Html.ActionLink("Edit", "Edit", new { id = Model.ID })}
+
+        <h2>@Html.DisplayFor(model => model.Name)</h2>
+        <h3>Category: @Html.ActionLink(Model.Category.Name, "Index", "Products", new { category = Model.Category.Name }, new { @style = "color: grey; text-decoration: underline" })</h3>
+
+
+        <h3><strong>@Html.DisplayFor(model => model.Price)</strong></h3>
+        <br />
+        <p>@Html.DisplayFor(model => model.Description)</p>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Back to products", "Index", null, new { @class = "btn btn-primary", @style = "width: 100%; margin-top: 10px" })
+</p>

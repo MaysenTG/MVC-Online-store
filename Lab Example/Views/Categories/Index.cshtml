@@ -1,0 +1,43 @@
+﻿@*@model Lab_Example.ViewModels.CategoryIndexViewModel*@
+
+@model IEnumerable < Lab_Example.Models.Category >
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "All categories";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+
+
+<div class="row">
+    @*@foreach (var item in Model)*@
+    @foreach (var cat_item in Model)
+    {
+
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h3>@Html.DisplayFor(prdct => cat_item.Name)</h3>
+                    <p>
+                        @Html.ActionLink("View products", "Index", "Products", new { category = cat_item.Name }, new { @class = "btn btn-primary" })
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                        <p>
+                            @Html.ActionLink("Edit", "Edit", new { id = cat_item.ID }) |
+                            @Html.ActionLink("Details", "Details", new { id = cat_item.ID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = cat_item.ID })
+                        </p>
+                    }
+                    </div>
+                </div>
+            </div>
+        }
+</div>
